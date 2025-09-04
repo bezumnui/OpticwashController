@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpticwashController", "OpticwashController\OpticwashController.csproj", "{DE2172E0-8DB3-4ED5-8D5C-7F3C19232BDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDBCommunicators", "MDBCommunicators\MDBCommunicators.csproj", "{728ECD42-198F-48A2-A55F-9F5CE7C043CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE2172E0-8DB3-4ED5-8D5C-7F3C19232BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE2172E0-8DB3-4ED5-8D5C-7F3C19232BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE2172E0-8DB3-4ED5-8D5C-7F3C19232BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE2172E0-8DB3-4ED5-8D5C-7F3C19232BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{728ECD42-198F-48A2-A55F-9F5CE7C043CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{728ECD42-198F-48A2-A55F-9F5CE7C043CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{728ECD42-198F-48A2-A55F-9F5CE7C043CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{728ECD42-198F-48A2-A55F-9F5CE7C043CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
