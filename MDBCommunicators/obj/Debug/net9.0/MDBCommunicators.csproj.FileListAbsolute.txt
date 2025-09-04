@@ -1,0 +1,12 @@
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/bin/Debug/net9.0/MDBCommunicators.deps.json
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/bin/Debug/net9.0/MDBCommunicators.dll
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/bin/Debug/net9.0/MDBCommunicators.pdb
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.csproj.AssemblyReference.cache
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.GeneratedMSBuildEditorConfig.editorconfig
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.AssemblyInfoInputs.cache
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.AssemblyInfo.cs
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.csproj.CoreCompileInputs.cache
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.dll
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/refint/MDBCommunicators.dll
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/MDBCommunicators.pdb
+/Users/bezikmac/RiderProjects/MDBCommunicator/MDBCommunicators/obj/Debug/net9.0/ref/MDBCommunicators.dll
