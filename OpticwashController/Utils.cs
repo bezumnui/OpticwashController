@@ -8,6 +8,7 @@ namespace OpticwashController
         {
             foreach (string port in SerialPort.GetPortNames())
             {
+                Console.WriteLine("Processing port: " + port);
                 if (GetDeviceVendor(port) == vendor)
                 {
                     result = port;
@@ -60,6 +61,8 @@ namespace OpticwashController
             string path = $"/sys/class/tty/{device}/device";
             
             // string devicePath = Path.GetFullPath(Path.Combine(path, "../../"));
+            Console.WriteLine("AscendToFirstNonHubUsbDevice: " + device);
+
             string devicePath = AscendToFirstNonHubUsbDevice(path);
             string vendorPath = Path.Combine(devicePath, "idVendor");
 
