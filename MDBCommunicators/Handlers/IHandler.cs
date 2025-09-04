@@ -1,6 +1,7 @@
-namespace MDBCommunicators.Handlers;
-
-public interface IHandler
+namespace MDBCommunicators.Handlers
 {
-    public bool TryConsume(string text);
+    public interface IHandler
+    { 
+        bool TryConsume(string text);
+    }
 }

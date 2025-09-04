@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OpticwashController")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77efc600269956c7f6730d1c87791d09d12fa184")]
 [assembly: System.Reflection.AssemblyProductAttribute("OpticwashController")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OpticwashController")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

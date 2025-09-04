@@ -53,3 +53,4 @@
 /Users/bezikmac/RiderProjects/OpticwashController/OpticwashController/obj/Debug/net9.0/OpticwashController.pdb
 /Users/bezikmac/RiderProjects/OpticwashController/OpticwashController/obj/Debug/net9.0/OpticwashController.genruntimeconfig.cache
 /Users/bezikmac/RiderProjects/OpticwashController/OpticwashController/obj/Debug/net9.0/ref/OpticwashController.dll
+/Users/bezikmac/RiderProjects/OpticwashController/OpticwashController/obj/Debug/net9.0/OpticwashController.sourcelink.json

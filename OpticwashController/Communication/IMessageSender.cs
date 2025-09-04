@@ -1,8 +1,9 @@
 using OpticwashController.Message;
 
-namespace OpticwashController.Communication;
-
-public interface IMessageSender
+namespace OpticwashController.Communication
 {
-    void SendMessage(OutputMessage message);
+    public interface IMessageSender
+    {
+        void SendMessage(OutputMessage message);
+    }
 }

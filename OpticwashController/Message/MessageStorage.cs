@@ -1,78 +1,79 @@
-namespace OpticwashController.Message;
-
-public class MessageStorage : IMessageStorage
+namespace OpticwashController.Message
 {
-    private readonly Dictionary<InputMessage, DateTime> _messages = new Dictionary<InputMessage, DateTime>();
-    private int _timoutMs;
-    private int _sleepMs;
-    
-    public MessageStorage(int timoutMs = 1000, int sleepMs = 50)
+    public class MessageStorage : IMessageStorage
     {
-        _sleepMs = sleepMs;
-        _timoutMs = timoutMs;
-    }
-
-    public void AddMessage(InputMessage message)
-    {
-        if (message == null)
-            throw new ArgumentNullException(nameof(message));
-        
-        if (_messages.ContainsKey(message))
-            throw new InvalidOperationException("Message already exists in storage");
-        
-        _messages.Add(message, DateTime.UtcNow);
-    }
+        private readonly Dictionary<InputMessage, DateTime> _messages = new Dictionary<InputMessage, DateTime>();
+        private int _timoutMs;
+        private int _sleepMs;
     
-    
-    public void ClearTimeoutMessages()
-    {
-        DateTime now = DateTime.UtcNow;
-        List<InputMessage> toRemove = new List<InputMessage>();
-        
-        foreach (KeyValuePair<InputMessage, DateTime> pair in _messages)
+        public MessageStorage(int timoutMs = 1000, int sleepMs = 50)
         {
-            if ((now - pair.Value).TotalMilliseconds > _timoutMs)
-                toRemove.Add(pair.Key);
+            _sleepMs = sleepMs;
+            _timoutMs = timoutMs;
         }
 
-        foreach (InputMessage message in toRemove)
-            _messages.Remove(message);
-        
-    }
-
-    public InputMessage GetMessageByPacketLabel(int packetLabel)
-    {
-        for (int i = 0; i < _timoutMs; i += _sleepMs)
+        public void AddMessage(InputMessage message)
         {
-            if (TryGetMessageByPacketLabel(packetLabel, out InputMessage? message))
-                return message;
-            
-            Thread.Sleep(_sleepMs);
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
+        
+            if (_messages.ContainsKey(message))
+                throw new InvalidOperationException("Message already exists in storage");
+        
+            _messages.Add(message, DateTime.UtcNow);
         }
-        
-        throw new TimeoutException("Timeout while waiting for message");
-    }
     
-    private bool TryGetMessageByPacketLabel(int packetLabel, out InputMessage message)
-    {
-        ClearTimeoutMessages();
-        
-        message = null;
-        
-        foreach (KeyValuePair<InputMessage, DateTime> pair in _messages)
+    
+        public void ClearTimeoutMessages()
         {
-            if (pair.Key.PacketLabel == packetLabel)
+            DateTime now = DateTime.UtcNow;
+            List<InputMessage> toRemove = new List<InputMessage>();
+        
+            foreach (KeyValuePair<InputMessage, DateTime> pair in _messages)
             {
-                message = pair.Key;
-                break;
+                if ((now - pair.Value).TotalMilliseconds > _timoutMs)
+                    toRemove.Add(pair.Key);
             }
+
+            foreach (InputMessage message in toRemove)
+                _messages.Remove(message);
+        
         }
 
-        if (message == null)
-            return false;
+        public InputMessage GetMessageByPacketLabel(int packetLabel)
+        {
+            for (int i = 0; i < _timoutMs; i += _sleepMs)
+            {
+                if (TryGetMessageByPacketLabel(packetLabel, out InputMessage message))
+                    return message;
+            
+                Thread.Sleep(_sleepMs);
+            }
         
-        _messages.Remove(message);
+            throw new TimeoutException("Timeout while waiting for message");
+        }
+    
+        private bool TryGetMessageByPacketLabel(int packetLabel, out InputMessage message)
+        {
+            ClearTimeoutMessages();
+        
+            message = null;
+        
+            foreach (KeyValuePair<InputMessage, DateTime> pair in _messages)
+            {
+                if (pair.Key.PacketLabel == packetLabel)
+                {
+                    message = pair.Key;
+                    break;
+                }
+            }
 
-        return true;
+            if (message == null)
+                return false;
+        
+            _messages.Remove(message);
+
+            return true;
+        }
     }
 }

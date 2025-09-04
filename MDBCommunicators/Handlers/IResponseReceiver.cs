@@ -1,6 +1,7 @@
-namespace MDBCommunicators.Handlers;
-
-public interface IResponseReceiver
+namespace MDBCommunicators.Handlers
 {
-    bool TryGetFirstMessageById(char messageId, out MDBInputMessage result);
+    public interface IResponseReceiver
+    {
+        bool TryGetFirstMessageById(char messageId, out MDBInputMessage result);
+    }
 }

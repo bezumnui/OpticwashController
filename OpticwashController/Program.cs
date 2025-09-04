@@ -1,27 +1,28 @@
 ﻿using System.IO.Ports;
 using MDBCommunicators;
 
-namespace OpticwashController;
-
-internal class Program
+namespace OpticwashController
 {
-    private static void Main(string[] args)
+    internal class Program
     {
-        foreach (string portName in SerialPort.GetPortNames())
+        private static void Main(string[] args)
         {
-            Console.WriteLine($"PortName: {portName}");
-        }
+            foreach (string portName in SerialPort.GetPortNames())
+            {
+                Console.WriteLine($"PortName: {portName}");
+            }
         
-        // MDBCommunicator communicator = new MDBCommunicator(new SerialPort("/dev/tty.usbmodem01"), MDBAddress.First);
-        // communicator.Start();
-        //
-        // communicator.CommandCommunicator.StartMasterMode();
-        // communicator.CommandCommunicator.EnterReaderMode();
-        // communicator.Poller.Start();
-        // Console.ReadKey();
-        // communicator.CommandCommunicator.RequestVending(500);
-        // Console.ReadKey();
-        // communicator.Poller.Stop();
-        // communicator.Stop();
+            // MDBCommunicator communicator = new MDBCommunicator(new SerialPort("/dev/tty.usbmodem01"), MDBAddress.First);
+            // communicator.Start();
+            //
+            // communicator.CommandCommunicator.StartMasterMode();
+            // communicator.CommandCommunicator.EnterReaderMode();
+            // communicator.Poller.Start();
+            // Console.ReadKey();
+            // communicator.CommandCommunicator.RequestVending(500);
+            // Console.ReadKey();
+            // communicator.Poller.Stop();
+            // communicator.Stop();
+        }
     }
 }

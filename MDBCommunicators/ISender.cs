@@ -1,6 +1,7 @@
-namespace MDBCommunicators;
-
-public interface ISender
+namespace MDBCommunicators
 {
-    void Send(string message);
+    public interface ISender
+    {
+        void Send(string message);
+    }
 }

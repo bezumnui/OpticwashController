@@ -1,12 +1,13 @@
 using MDBCommunicators.Handlers;
 
-namespace OpticwashController.Handlers;
-
-public class StatusHandler : IHandler
+namespace OpticwashController.Handlers
 {
-    private readonly KeepAliveLookup _keepAliveLookup;
-    public bool TryConsume(string text) =>
-        throw new NotImplementedException();
+    public class StatusHandler : IHandler
+    {
+        private readonly KeepAliveLookup _keepAliveLookup;
+        public bool TryConsume(string text) =>
+            throw new NotImplementedException();
     
     
+    }
 }

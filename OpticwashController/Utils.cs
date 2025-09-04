@@ -1,9 +1,10 @@
-namespace OpticwashController;
-
-public static class Utils
+namespace OpticwashController
 {
-    public static string GetDeviceByVendor(int vendor)
+    public static class Utils
     {
-        throw new NotImplementedException();
+        public static string GetDeviceByVendor(int vendor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

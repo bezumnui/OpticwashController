@@ -1,8 +1,9 @@
 using OpticwashController.Message;
 
-namespace OpticwashController.Communication;
-
-public interface ICommandConsumer
+namespace OpticwashController.Communication
 {
-    public bool TryConsume(InputMessage message);
+    public interface ICommandConsumer
+    {
+        bool TryConsume(InputMessage message);
+    }
 }

@@ -1,9 +1,10 @@
 
-namespace OpticwashController.Communication;
-
-public interface IMessageListener
+namespace OpticwashController.Communication
 {
-    void Start();
-    void Stop();
-    void AddCommandConsumer(ICommandConsumer commandConsumer);
+    public interface IMessageListener
+    {
+        void Start();
+        void Stop();
+        void AddCommandConsumer(ICommandConsumer commandConsumer);
+    }
 }

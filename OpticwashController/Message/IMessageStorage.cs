@@ -1,8 +1,9 @@
-namespace OpticwashController.Message;
-
-public interface IMessageStorage
+namespace OpticwashController.Message
 {
-    void AddMessage(InputMessage message);
-    void ClearTimeoutMessages();
-    InputMessage GetMessageByPacketLabel(int packetLabel);
+    public interface IMessageStorage
+    {
+        void AddMessage(InputMessage message);
+        void ClearTimeoutMessages();
+        InputMessage GetMessageByPacketLabel(int packetLabel);
+    }
 }

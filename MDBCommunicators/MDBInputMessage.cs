@@ -1,21 +1,22 @@
-namespace MDBCommunicators;
-
-public class MDBInputMessage
+namespace MDBCommunicators
 {
-    public MDBInputMessage(string content, char identifier)
+    public class MDBInputMessage
     {
-        Content = content;
-        Identifier = identifier;
-        TimeReceivedUtc = DateTime.UtcNow;
+        public MDBInputMessage(string content, char identifier)
+        {
+            Content = content;
+            Identifier = identifier;
+            TimeReceivedUtc = DateTime.UtcNow;
 
-        Console.WriteLine($"Created: {this}");
-    }
+            Console.WriteLine($"Created: {this}");
+        }
     
 
-    public char Identifier { get; init; }
-    public string Content { get; init; }
-    public DateTime TimeReceivedUtc { get; init; }
+        public char Identifier { get; }
+        public string Content { get; }
+        public DateTime TimeReceivedUtc { get; }
 
-    public override string ToString() =>
-        $"MDBInputMessage({nameof(Identifier)}: \'{Identifier}\', {nameof(Content)}: \"{Content}\", {nameof(TimeReceivedUtc)}: {TimeReceivedUtc})";
+        public override string ToString() =>
+            $"MDBInputMessage({nameof(Identifier)}: \'{Identifier}\', {nameof(Content)}: \"{Content}\", {nameof(TimeReceivedUtc)}: {TimeReceivedUtc})";
+    }
 }

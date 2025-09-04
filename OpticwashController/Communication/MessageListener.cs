@@ -3,148 +3,149 @@ using System.IO.Ports;
 using Microsoft.Extensions.Logging;
 using OpticwashController.Message;
 
-namespace OpticwashController.Communication;
-
-public class MessageListener : IMessageListener
+namespace OpticwashController.Communication
 {
-    private const int StartMessageByte = 0x02;
-    private const int BufferSize = 65;
-    private const float TimeoutSeconds = 0.5f;
-    private readonly List<ICommandConsumer> _commandConsumers = new List<ICommandConsumer>();
-    private readonly List<byte> _buffer = new List<byte>(BufferSize);
-    private readonly ILogger _logger;
-    private readonly SerialPort _serialPort;
-
-    private bool _isListening;
-
-    public MessageListener(SerialPort serialPort, ILoggerFactory factory)
+    public class MessageListener : IMessageListener
     {
-        _serialPort = serialPort;
-        _logger = factory.CreateLogger(nameof(MessageListener));
-    }
+        private const int StartMessageByte = 0x02;
+        private const int BufferSize = 65;
+        private const float TimeoutSeconds = 0.5f;
+        private readonly List<ICommandConsumer> _commandConsumers = new List<ICommandConsumer>();
+        private readonly List<byte> _buffer = new List<byte>(BufferSize);
+        private readonly ILogger _logger;
+        private readonly SerialPort _serialPort;
 
-    public void Start()
-    {
-        if (_serialPort.IsOpen == false)
-            throw new InvalidOperationException("Port is not open");
+        private bool _isListening;
 
-        if (_isListening)
-            throw new InvalidOperationException("Already listening");
+        public MessageListener(SerialPort serialPort, ILoggerFactory factory)
+        {
+            _serialPort = serialPort;
+            _logger = factory.CreateLogger(nameof(MessageListener));
+        }
 
-        _isListening = true;
-        Thread thread = new Thread(StartInThread);
-        thread.Start();
-    }
+        public void Start()
+        {
+            if (_serialPort.IsOpen == false)
+                throw new InvalidOperationException("Port is not open");
 
-    public void Stop()
-    {
-        if (_isListening == false)
-            throw new InvalidOperationException("Is not listening");
+            if (_isListening)
+                throw new InvalidOperationException("Already listening");
 
-        _isListening = false;
-    }
+            _isListening = true;
+            Thread thread = new Thread(StartInThread);
+            thread.Start();
+        }
+
+        public void Stop()
+        {
+            if (_isListening == false)
+                throw new InvalidOperationException("Is not listening");
+
+            _isListening = false;
+        }
     
-    public void AddCommandConsumer(ICommandConsumer commandConsumer)
-    {
-        if (commandConsumer == null)
-            throw new ArgumentNullException(nameof(commandConsumer));
-
-        if (_commandConsumers.Contains(commandConsumer))
-            throw new InvalidOperationException("Command consumer is already registered");
-
-        _commandConsumers.Add(commandConsumer);
-    }
-
-    private void StartInThread()
-    {
-        while (_serialPort.IsOpen && _isListening)
+        public void AddCommandConsumer(ICommandConsumer commandConsumer)
         {
-            Thread.Sleep(100);
+            if (commandConsumer == null)
+                throw new ArgumentNullException(nameof(commandConsumer));
 
-            if (ShouldReadNewMessage(_serialPort.ReadByte()) == false)
+            if (_commandConsumers.Contains(commandConsumer))
+                throw new InvalidOperationException("Command consumer is already registered");
+
+            _commandConsumers.Add(commandConsumer);
+        }
+
+        private void StartInThread()
+        {
+            while (_serialPort.IsOpen && _isListening)
             {
-                _logger.LogError("Could not get awaited byte. Got {int}, instead of {StartMessageByte}", StartMessageByte, StartMessageByte);
+                Thread.Sleep(100);
 
-                continue;
-            }
+                if (ShouldReadNewMessage(_serialPort.ReadByte()) == false)
+                {
+                    _logger.LogError("Could not get awaited byte. Got {int}, instead of {StartMessageByte}", StartMessageByte, StartMessageByte);
+
+                    continue;
+                }
         
-            ReadNewMessage();
+                ReadNewMessage();
 
-            if (TryParseNewMessage(out InputMessage? message) == false || message == null)
-                continue;
+                if (TryParseNewMessage(out InputMessage message) == false || message == null)
+                    continue;
 
-            HandleInputMessage(message);
+                HandleInputMessage(message);
+            }
         }
-    }
 
-    private void HandleInputMessage(InputMessage inputMessage)
-    {
-        _logger.LogDebug("Received InputMessage: {InputMessage}", inputMessage);
-
-        foreach (ICommandConsumer consumer in _commandConsumers)
+        private void HandleInputMessage(InputMessage inputMessage)
         {
-            if (consumer.TryConsume(inputMessage))
-                return;
-        }
-    }
+            _logger.LogDebug("Received InputMessage: {InputMessage}", inputMessage);
 
-    private bool ShouldReadNewMessage(int readByte) =>
-        readByte == StartMessageByte;
-
-    private void ReadNewMessage()
-    {
-        _buffer.Clear();
-
-        _buffer[0] = StartMessageByte;
-
-        int bytesToRead = _serialPort.BytesToRead;
-
-        while (_buffer.Count < bytesToRead && _isListening && _serialPort.IsOpen)
-        {
-            DateTime beforePacketTime = DateTime.Now;
-            int read = _serialPort.ReadByte();
-            DateTime lastPacketTime = DateTime.Now;
-
-            if (IsTimeout(beforePacketTime, lastPacketTime))
+            foreach (ICommandConsumer consumer in _commandConsumers)
             {
-                if (ShouldReadNewMessage(_serialPort.ReadByte()))
-                    ReadNewMessage();
+                if (consumer.TryConsume(inputMessage))
+                    return;
+            }
+        }
 
-                return;
+        private bool ShouldReadNewMessage(int readByte) =>
+            readByte == StartMessageByte;
+
+        private void ReadNewMessage()
+        {
+            _buffer.Clear();
+
+            _buffer[0] = StartMessageByte;
+
+            int bytesToRead = _serialPort.BytesToRead;
+
+            while (_buffer.Count < bytesToRead && _isListening && _serialPort.IsOpen)
+            {
+                DateTime beforePacketTime = DateTime.Now;
+                int read = _serialPort.ReadByte();
+                DateTime lastPacketTime = DateTime.Now;
+
+                if (IsTimeout(beforePacketTime, lastPacketTime))
+                {
+                    if (ShouldReadNewMessage(_serialPort.ReadByte()))
+                        ReadNewMessage();
+
+                    return;
+                }
+
+                _buffer.Add((byte)read);
+            }
+        }
+
+        private bool TryParseNewMessage(out InputMessage inputMessage)
+        {
+            inputMessage = null;
+
+            try
+            {
+                inputMessage = new InputMessage(_buffer);
+            }
+            catch (InvalidOperationException e)
+            {
+                _logger.LogError(e, "Could not parse message");
+
+                return false;
+            }
+            catch (ValidationException e)
+            {
+                _logger.LogError(e, "Could not validate message");
+
+                return false;
             }
 
-            _buffer.Add((byte)read);
+            return true;
         }
-    }
 
-    private bool TryParseNewMessage(out InputMessage? inputMessage)
-    {
-        inputMessage = null;
-
-        try
+        private bool IsTimeout(DateTime beforeTime, DateTime afterTime)
         {
-            inputMessage = new InputMessage(_buffer);
+            TimeSpan time = afterTime - beforeTime;
+
+            return time.TotalSeconds >= TimeoutSeconds;
         }
-        catch (InvalidOperationException e)
-        {
-            _logger.LogError(e, "Could not parse message");
-
-            return false;
-        }
-        catch (ValidationException e)
-        {
-            _logger.LogError(e, "Could not validate message");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool IsTimeout(DateTime beforeTime, DateTime afterTime)
-    {
-        TimeSpan time = afterTime - beforeTime;
-
-        return time.TotalSeconds >= TimeoutSeconds;
     }
 }

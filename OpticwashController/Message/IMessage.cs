@@ -1,12 +1,13 @@
-namespace OpticwashController.Message;
-
-public interface IMessage
+namespace OpticwashController.Message
 {
-    CommandCode CommandCode { get; }
-    PacketType PacketType { get; }
-    int RawResponseType { get; init; }
-    byte[] Address { get; init; }
-    List<byte> RawPacketLabel { get; init; }
-    List<byte> Data { get; init; }
-    byte Checksum { get; init; }
+    public interface IMessage
+    {
+        CommandCode CommandCode { get; }
+        PacketType PacketType { get; }
+        int RawResponseType { get; }
+        byte[] Address { get; }
+        List<byte> RawPacketLabel { get; }
+        List<byte> Data { get; }
+        byte Checksum { get; }
+    }
 }
